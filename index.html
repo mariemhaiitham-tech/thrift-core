@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>THRIFT CORE — vintage · y2k · gothic · grunge</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#141110;--cream:#efe4d1;--paper:#e8dcc7;--paper2:#d3c2a8;--wine:#601d27;--rose:#8b4e50;--sage:#666451}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--ink);color:var(--cream);font-family:"DM Mono",monospace}
+a{color:inherit;text-decoration:none}.top{height:34px;background:var(--wine);display:flex;align-items:center;overflow:hidden;white-space:nowrap;font-size:9px;letter-spacing:1.5px}.ticker{animation:move 24s linear infinite}@keyframes move{to{transform:translateX(-45%)}}
+.nav{height:82px;border-bottom:1px solid #efe4d133;display:flex;align-items:center;justify-content:space-between;padding:0 4vw;position:sticky;top:0;z-index:30;background:#141110ed;backdrop-filter:blur(10px)}
+.logo{font-family:"Playfair Display",serif;font-size:27px;line-height:.72;letter-spacing:-1px}.logo small{font-family:"DM Mono";font-size:7px;letter-spacing:1px;display:block;margin-top:9px;max-width:350px;white-space:nowrap}
+.navlinks{display:flex;gap:30px;font-size:9px}.navlinks a:hover{color:#c58d8d}.icons{display:flex;gap:18px;font-size:18px}
+
+/* botanical illustrations */
+.botanical{position:absolute;pointer-events:none;z-index:1;color:var(--wine)}
+.botanical svg{width:100%;height:100%;display:block}
+.flower-hero{width:330px;height:430px;right:-35px;top:40px;opacity:.62;transform:rotate(8deg)}
+.flower-hero.left{left:-90px;right:auto;top:390px;width:270px;height:350px;opacity:.32;transform:rotate(-22deg)}
+.flower-offer{width:210px;height:210px;right:2%;top:-40px;opacity:.38;transform:rotate(12deg)}
+.flower-shop{width:240px;height:300px;left:-55px;bottom:0;opacity:.25;transform:rotate(-10deg)}
+.flower-manifesto{width:300px;height:390px;right:-60px;bottom:-55px;opacity:.5;transform:rotate(-8deg);color:#c4a88e}
+.flower-archive{width:260px;height:330px;left:-50px;bottom:-50px;opacity:.35;transform:rotate(14deg);color:var(--wine)}
+.flower-about{width:260px;height:320px;right:-35px;top:-30px;opacity:.3;transform:rotate(8deg);color:var(--wine)}
+
+.hero{background:var(--paper);color:var(--ink);min-height:720px;position:relative;overflow:hidden;padding:70px 7vw;display:grid;grid-template-columns:1.05fr .95fr;align-items:center}
+.hero:before,.paper:before{content:"";position:absolute;inset:0;opacity:.13;background-image:radial-gradient(#111 0.7px,transparent .7px);background-size:7px 7px;pointer-events:none}
+.hero-copy{position:relative;z-index:4}.eyebrow{font-size:9px;letter-spacing:2px;margin:0 0 22px}.hero h1{font-family:"Playfair Display",serif;font-size:clamp(70px,10vw,142px);line-height:.72;letter-spacing:-7px;margin:0}.hero h1 em{font-weight:500;color:var(--wine)}.tagline{font-family:"Playfair Display",serif;font-size:20px;max-width:450px;line-height:1.25;margin:34px 0}.tagline small{font-family:"DM Mono";font-size:9px;letter-spacing:1px}.cta{display:inline-block;background:var(--wine);color:var(--cream);padding:17px 25px;font-size:9px;letter-spacing:1px;box-shadow:5px 5px 0 var(--ink);transition:.2s}.cta:hover{transform:translate(3px,3px);box-shadow:2px 2px 0 var(--ink)}
+.collage{height:570px;position:relative;z-index:4}.polaroid{position:absolute;background:#eee5d5;padding:12px 12px 36px;box-shadow:7px 9px 0 #1114;width:260px;color:var(--ink)}.polaroid.one{left:3%;top:7%;transform:rotate(-7deg)}.polaroid.two{right:2%;top:18%;transform:rotate(6deg);width:230px}.polaroid.three{left:27%;bottom:0;transform:rotate(3deg);width:240px}.fakephoto{height:270px;background:linear-gradient(135deg,#594c43,#b5a38d 50%,#29221e);display:grid;place-items:center;font-family:"Playfair Display";font-size:27px;text-align:center}.two .fakephoto{height:220px;background:linear-gradient(135deg,#161515,#6d6153)}.three .fakephoto{height:190px;background:linear-gradient(135deg,#b9aa96,#5d4b43)}.caption{font-size:8px;margin-top:9px;letter-spacing:1px}.stamp{position:absolute;right:4%;bottom:4%;border:2px solid var(--wine);color:var(--wine);border-radius:50%;width:105px;height:105px;display:grid;place-items:center;text-align:center;font-size:10px;line-height:1.1;transform:rotate(-12deg);background:#e8dcc788}
+
+.promo{background:var(--wine);padding:27px 7vw;display:grid;grid-template-columns:.8fr 1.2fr 1fr;align-items:center;gap:30px;border-block:1px solid #efe4d133;position:relative;overflow:hidden}.promo>*{position:relative;z-index:3}.promo .big{font-family:"Playfair Display";font-size:58px}.promo strong{font-family:"Playfair Display";font-size:58px}.promo p{font-size:9px;line-height:1.7;margin:0}
+
+.section{padding:100px 7vw}.section.paper{background:var(--paper);color:var(--ink);position:relative;overflow:hidden}.head{display:flex;justify-content:space-between;align-items:end;border-bottom:1px solid currentColor;padding-bottom:18px;margin-bottom:45px;position:relative;z-index:3}.head h2{font-family:"Playfair Display";font-size:68px;line-height:.8;font-weight:500;margin:0;letter-spacing:-3px}.head p{font-size:8px;text-align:right;line-height:1.6}
+.products{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;position:relative;z-index:3}.card{position:relative}.product-photo{height:430px;background:#b8aa97;display:grid;place-items:center;position:relative;overflow:hidden}.product-photo:after{content:"YOUR PHOTO";font-family:"Playfair Display";font-size:30px;opacity:.55}.product-photo img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;display:none}.product-photo.has-image img{display:block}.number{position:absolute;right:10px;top:10px;font-size:8px;background:var(--paper);padding:5px 7px;z-index:2}.details{padding:14px 0;border-bottom:1px solid #1115;display:grid;grid-template-columns:1fr auto}.details h3{font-family:"Playfair Display";font-size:20px;font-weight:500;margin:0}.details span{font-size:8px}.price{grid-column:2;font-size:9px;margin-top:8px}.claim{font-size:8px;border-bottom:1px solid;display:inline-block;margin-top:12px}.drop-note{margin:70px auto 0;max-width:760px;text-align:center;border-top:1px solid #1114;padding-top:28px;font-family:"Playfair Display";font-size:22px;line-height:1.35;position:relative;z-index:3}.drop-note em{color:var(--wine)}
+
+.manifesto{background:#141110;color:var(--cream);padding:110px 10vw;display:grid;grid-template-columns:1fr 1fr;gap:10vw;align-items:center;position:relative;overflow:hidden}.manifesto>*:not(.botanical){position:relative;z-index:3}.manifesto .scribble{font-family:"Playfair Display";font-style:italic;font-size:clamp(55px,7vw,100px);line-height:.76;transform:rotate(-7deg)}.manifesto h2,.about h2{font-family:"Playfair Display";font-size:65px;line-height:.82;font-weight:500;letter-spacing:-3px;margin:0 0 30px}.manifesto h2 em,.about h2 em{color:#c68d8d}.manifesto p:not(.eyebrow){font-family:"Playfair Display";font-size:21px;line-height:1.45;max-width:500px}
+
+.archive{background:var(--paper2);color:var(--ink);position:relative;overflow:hidden}.archive-grid{display:grid;grid-template-columns:1fr .7fr 1fr;gap:25px;position:relative;z-index:3}.archive-card:nth-child(2){margin-top:75px}.archive-img{height:380px;background:linear-gradient(135deg,#837466,#d0c1ab);display:grid;place-items:center;font-family:"Playfair Display";font-size:32px}.archive-card:nth-child(2) .archive-img{height:470px}.archive-card p{font-size:8px;letter-spacing:1px}
+
+.about{background:var(--paper);color:var(--ink);position:relative;overflow:hidden}.about>*:not(.botanical){position:relative;z-index:3}.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:9vw;margin-top:55px}.about-grid p{font-family:"Playfair Display";font-size:24px;line-height:1.35;margin:0}
+
+.features{background:var(--paper);color:var(--ink);border-top:1px solid #1114;display:grid;grid-template-columns:repeat(4,1fr);padding:40px 7vw}.feature{padding:15px 25px;border-right:1px dashed #1115;text-align:center}.feature:last-child{border:0}.feature .icon{font-size:29px}.feature h3{font-family:"Playfair Display";font-size:17px;margin:10px 0 6px}.feature p{font-size:8px;line-height:1.7;margin:0}
+.instagram{padding:70px 7vw;background:#141110}.igtitle{display:flex;justify-content:space-between;align-items:end;margin-bottom:25px}.igtitle h2{font-family:"Playfair Display";font-size:50px;font-weight:500;margin:0}.iggrid{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}.igbox{aspect-ratio:1;background:#706357;display:grid;place-items:center;font-size:8px}.igbox:nth-child(2n){background:#b5a58e}.igbox:nth-child(3n){background:#4b3b36}
+footer{padding:55px 7vw 25px;background:#141110;border-top:1px solid #efe4d133;display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:40px}.footerlogo{font-family:"Playfair Display";font-size:39px;line-height:.75}.footerlogo i{color:#c98b8b}.foot h4{font-size:8px;letter-spacing:1px}.foot a,.foot p{display:block;font-size:8px;line-height:2;color:#cfc5b5;margin:0}.bottom{text-align:center;border-top:1px solid #efe4d122;padding:16px;font-size:7px;color:#918a7d}
+
+@media(max-width:800px){
+.nav{height:72px}.navlinks{display:none}.logo{font-size:23px}.logo small{font-size:6px;max-width:260px;white-space:normal}.hero{grid-template-columns:1fr;padding:60px 7vw 30px;min-height:auto}.hero h1{font-size:74px}.collage{height:450px;margin-top:25px}.polaroid{width:200px}.polaroid.one{left:0}.polaroid.two{right:0;width:175px}.polaroid.three{left:25%;width:190px}.fakephoto{height:205px}.two .fakephoto{height:165px}.three .fakephoto{height:150px}.flower-hero{right:-90px;top:310px;opacity:.3;width:230px;height:300px}.flower-hero.left{left:-110px;top:420px;width:220px;height:280px}.promo{grid-template-columns:1fr;text-align:center;gap:5px}.promo .big,.promo strong{font-size:48px}.flower-offer{right:-45px;opacity:.22}.section{padding:75px 7vw}.head h2{font-size:49px}.products{grid-template-columns:1fr 1fr;gap:35px 15px}.product-photo{height:300px}.manifesto{grid-template-columns:1fr;padding:80px 7vw}.manifesto h2,.about h2{font-size:49px}.archive-grid{grid-template-columns:1fr}.archive-card:nth-child(2){margin-top:0}.features{grid-template-columns:1fr 1fr}.feature:nth-child(2){border-right:0}.feature:nth-child(-n+2){border-bottom:1px dashed #1115}.iggrid{grid-template-columns:repeat(3,1fr)}footer{grid-template-columns:1fr 1fr}.footerlogo{grid-column:1/-1}}
+@media(max-width:480px){.products{grid-template-columns:1fr}.product-photo{height:390px}.features{grid-template-columns:1fr}.feature{border-right:0!important;border-bottom:1px dashed #1115!important}.feature:last-child{border:0!important}.igtitle h2{font-size:38px}}
+</style>
+</head>
+<body>
+<div class="top"><div class="ticker">✦ THRIFT CORE ✦ VINTAGE ✦ Y2K ✦ GOTHIC ✦ GRUNGE ✦ FAIRYCORE & MORE ✦ NEW DROPS ✦ LIMITED PIECES ✦ SPECIAL OFFERS ✦ &nbsp;</div></div>
+
+<header class="nav">
+<a class="logo" href="#">THRIFT<br><span>CORE</span><small>VINTAGE | Y2K | GOTHIC | GRUNGE | FAIRYCORE & MORE</small></a>
+<nav class="navlinks"><a href="#shop">SHOP</a><a href="#archive">THE ARCHIVE</a><a href="#about">ABOUT</a><a href="#info">INFO</a><a href="#contact">CONTACT</a></nav>
+<div class="icons"><span>⌕</span><span>♡</span></div>
+</header>
+
+<section class="hero">
+<div class="botanical flower-hero">
+<svg viewBox="0 0 300 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M145 420C145 350 151 300 145 245C139 190 118 135 82 78" stroke="currentColor" stroke-width="2"/>
+<path d="M145 290C118 260 91 247 61 244M144 255C174 227 203 211 236 207M128 190C103 167 83 145 67 120M151 166C174 143 198 126 222 117" stroke="currentColor" stroke-width="2"/>
+<g transform="translate(38 39)"><ellipse cx="43" cy="31" rx="12" ry="30" transform="rotate(-38 43 31)" fill="#7c4047"/><ellipse cx="69" cy="30" rx="12" ry="30" transform="rotate(38 69 30)" fill="#8d5257"/><ellipse cx="56" cy="48" rx="13" ry="30" fill="#6f313b"/><ellipse cx="55" cy="18" rx="11" ry="25" fill="#9b6663"/><circle cx="56" cy="32" r="8" fill="#b08b65"/></g>
+<g transform="translate(198 165) scale(.7)"><ellipse cx="43" cy="31" rx="12" ry="30" transform="rotate(-38 43 31)" fill="#7c4047"/><ellipse cx="69" cy="30" rx="12" ry="30" transform="rotate(38 69 30)" fill="#8d5257"/><ellipse cx="56" cy="48" rx="13" ry="30" fill="#6f313b"/><ellipse cx="55" cy="18" rx="11" ry="25" fill="#9b6663"/><circle cx="56" cy="32" r="8" fill="#b08b65"/></g>
+<path d="M75 245C48 226 29 207 13 180C40 181 62 193 79 212M207 207C224 180 246 165 274 158C261 187 239 204 211 219" stroke="#666451" stroke-width="3"/>
+</svg>
+</div>
+<div class="botanical flower-hero left">
+<svg viewBox="0 0 240 330" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M120 330C117 260 106 205 78 148C60 111 42 78 17 43" stroke="currentColor" stroke-width="2"/>
+<path d="M95 205C66 193 42 174 25 151M103 225C135 210 159 188 178 162" stroke="currentColor" stroke-width="2"/>
+<g transform="translate(0 0) scale(.65)"><ellipse cx="43" cy="31" rx="12" ry="30" transform="rotate(-38 43 31)" fill="#7c4047"/><ellipse cx="69" cy="30" rx="12" ry="30" transform="rotate(38 69 30)" fill="#8d5257"/><ellipse cx="56" cy="48" rx="13" ry="30" fill="#6f313b"/><ellipse cx="55" cy="18" rx="11" ry="25" fill="#9b6663"/><circle cx="56" cy="32" r="8" fill="#b08b65"/></g>
+</svg>
+</div>
+<div class="hero-copy"><p class="eyebrow">THE THRIFT ARCHIVE / DROP 01</p><h1>THRIFT<br><em>CORE</em></h1><p class="tagline">vintage pieces, real stories.<br><small>vintage · y2k · gothic · grunge · fairycore & more.</small></p><a class="cta" href="#shop">SHOP THE DROP →</a></div>
+<div class="collage">
+<div class="polaroid one"><div class="fakephoto">YOUR<br>PRODUCT<br>PHOTO</div><div class="caption">THRIFT CORE / 001</div></div>
+<div class="polaroid two"><div class="fakephoto">YOUR<br>DETAIL<br>PHOTO</div><div class="caption">ONE OF A KIND</div></div>
+<div class="polaroid three"><div class="fakephoto">YOUR<br>FAVOURITE<br>FIND</div><div class="caption">Y2K VIBES ★</div></div>
+<div class="stamp">THRIFT<br>CORE<br>★</div>
+</div>
+</section>
+
+<section class="promo">
+<div class="botanical flower-offer"><svg viewBox="0 0 210 210" xmlns="http://www.w3.org/2000/svg"><path d="M102 210C103 157 110 110 135 73" stroke="#d4a79a" stroke-width="2"/><path d="M109 148C82 137 63 120 47 98M122 111C149 103 170 88 188 68" stroke="#9c7760" stroke-width="2"/><g transform="translate(18 8) scale(.72)"><ellipse cx="43" cy="31" rx="12" ry="30" transform="rotate(-38 43 31)" fill="#7c4047"/><ellipse cx="69" cy="30" rx="12" ry="30" transform="rotate(38 69 30)" fill="#8d5257"/><ellipse cx="56" cy="48" rx="13" ry="30" fill="#6f313b"/><ellipse cx="55" cy="18" rx="11" ry="25" fill="#9b6663"/><circle cx="56" cy="32" r="8" fill="#b08b65"/></g></svg></div>
+<div class="big">SPECIAL OFFER</div><strong>150 EGP</strong><p>Anything in the available highlights is <b>150 EGP</b>.<br><br>Take 3 or more → free shipping OR take an extra one for free.</p>
+</section>
+
+<section class="section paper" id="shop">
+<div class="botanical flower-shop"><svg viewBox="0 0 240 300" xmlns="http://www.w3.org/2000/svg"><path d="M115 300C115 240 110 185 85 133C68 99 47 70 18 42" stroke="#601d27" stroke-width="2"/><path d="M93 190C65 180 41 163 23 140M103 212C132 199 157 178 178 151" stroke="#666451" stroke-width="2"/><g transform="translate(5 0) scale(.62)"><ellipse cx="43" cy="31" rx="12" ry="30" transform="rotate(-38 43 31)" fill="#7c4047"/><ellipse cx="69" cy="30" rx="12" ry="30" transform="rotate(38 69 30)" fill="#8d5257"/><ellipse cx="56" cy="48" rx="13" ry="30" fill="#6f313b"/><ellipse cx="55" cy="18" rx="11" ry="25" fill="#9b6663"/><circle cx="56" cy="32" r="8" fill="#b08b65"/></g></svg></div>
+<div class="head"><h2>SHOP THE DROP ★</h2><p>CURATED PIECES<br>VINTAGE / Y2K / ONE-OF-A-KIND</p></div>
+<div class="products">
+<article class="card"><div class="product-photo"><span class="number">01</span></div><div class="details"><h3>Lace Cami Top</h3><span>S–M</span><div class="price">PRICE</div></div><a class="claim" href="https://instagram.com/" target="_blank">CLAIM ON INSTAGRAM ↗</a></article>
+<article class="card"><div class="product-photo"><span class="number">02</span></div><div class="details"><h3>Vintage Tee</h3><span>M–L</span><div class="price">PRICE</div></div><a class="claim" href="https://instagram.com/" target="_blank">CLAIM ON INSTAGRAM ↗</a></article>
+<article class="card"><div class="product-photo"><span class="number">03</span></div><div class="details"><h3>Denim Mini Skirt</h3><span>S–M</span><div class="price">PRICE</div></div><a class="claim" href="https://instagram.com/" target="_blank">CLAIM ON INSTAGRAM ↗</a></article>
+<article class="card"><div class="product-photo"><span class="number">04</span></div><div class="details"><h3>Vintage Corset</h3><span>S</span><div class="price">PRICE</div></div><a class="claim" href="https://instagram.com/" target="_blank">CLAIM ON INSTAGRAM ↗</a></article>
+<article class="card"><div class="product-photo"><span class="number">05</span></div><div class="details"><h3>Y2K Cargo Pants</h3><span>M</span><div class="price">PRICE</div></div><a class="claim" href="https://instagram.com/" target="_blank">CLAIM ON INSTAGRAM ↗</a></article>
+<article class="card"><div class="product-photo"><span class="number">06</span></div><div class="details"><h3>Studded Shoulder Bag</h3><span>ONE SIZE</span><div class="price">PRICE</div></div><a class="claim" href="https://instagram.com/" target="_blank">CLAIM ON INSTAGRAM ↗</a></article>
+</div>
+<div class="drop-note">A rotating selection of <em>vintage, Y2K, gothic, grunge & one-of-a-kind</em> pieces — with prices that vary by item. New finds are added with every drop.</div>
+</section>
+
+<section class="manifesto">
+<div class="botanical flower-manifesto"><svg viewBox="0 0 300 390" xmlns="http://www.w3.org/2000/svg"><path d="M125 390C125 315 134 246 164 190C183 155 212 119 247 87" stroke="#c4a88e" stroke-width="2"/><path d="M145 255C111 244 82 224 57 194M166 211C201 201 229 181 254 153" stroke="#8d856c" stroke-width="3"/><g transform="translate(195 30) scale(.75)"><ellipse cx="43" cy="31" rx="12" ry="30" transform="rotate(-38 43 31)" fill="#7c4047"/><ellipse cx="69" cy="30" rx="12" ry="30" transform="rotate(38 69 30)" fill="#8d5257"/><ellipse cx="56" cy="48" rx="13" ry="30" fill="#6f313b"/><ellipse cx="55" cy="18" rx="11" ry="25" fill="#9b6663"/><circle cx="56" cy="32" r="8" fill="#b08b65"/></g></svg></div>
+<div class="scribble">not new.<br>just new<br>to you.</div><div><p class="eyebrow">THRIFT CORE PHILOSOPHY</p><h2>WE LIKE<br><em>THE WEIRD ONES.</em></h2><p>Old pieces. Strange silhouettes. Unexpected details. We hunt for clothes that feel like they already have a story — and give them a new one.</p></div>
+</section>
+
+<section class="section archive" id="archive">
+<div class="botanical flower-archive"><svg viewBox="0 0 260 330" xmlns="http://www.w3.org/2000/svg"><path d="M128 330C126 267 118 213 91 158C73 121 51 91 21 63" stroke="#601d27" stroke-width="2"/><path d="M101 215C69 203 44 185 25 161M112 236C141 223 166 202 188 174" stroke="#666451" stroke-width="2"/><g transform="translate(12 5) scale(.62)"><ellipse cx="43" cy="31" rx="12" ry="30" transform="rotate(-38 43 31)" fill="#7c4047"/><ellipse cx="69" cy="30" rx="12" ry="30" transform="rotate(38 69 30)" fill="#8d5257"/><ellipse cx="56" cy="48" rx="13" ry="30" fill="#6f313b"/><ellipse cx="55" cy="18" rx="11" ry="25" fill="#9b6663"/><circle cx="56" cy="32" r="8" fill="#b08b65"/></g></svg></div>
+<div class="head"><h2>THE ARCHIVE</h2><p>SOLD / SAVED / REMEMBERED<br>PAST DROPS & FAVOURITES</p></div>
+<div class="archive-grid"><div class="archive-card"><div class="archive-img">SOLD<br>01</div><p>DROP 00 / Y2K</p></div><div class="archive-card"><div class="archive-img">SOLD<br>02</div><p>DROP 00 / VINTAGE</p></div><div class="archive-card"><div class="archive-img">SOLD<br>03</div><p>DROP 00 / ARCHIVE</p></div></div>
+</section>
+
+<section class="section about" id="about">
+<div class="botanical flower-about"><svg viewBox="0 0 260 320" xmlns="http://www.w3.org/2000/svg"><path d="M125 320C127 260 135 209 160 165C178 133 204 106 236 81" stroke="#601d27" stroke-width="2"/><path d="M143 221C115 210 92 193 73 170M159 183C186 176 210 162 230 142" stroke="#666451" stroke-width="2"/><g transform="translate(183 27) scale(.65)"><ellipse cx="43" cy="31" rx="12" ry="30" transform="rotate(-38 43 31)" fill="#7c4047"/><ellipse cx="69" cy="30" rx="12" ry="30" transform="rotate(38 69 30)" fill="#8d5257"/><ellipse cx="56" cy="48" rx="13" ry="30" fill="#6f313b"/><ellipse cx="55" cy="18" rx="11" ry="25" fill="#9b6663"/><circle cx="56" cy="32" r="8" fill="#b08b65"/></g></svg></div>
+<p class="eyebrow">A LITTLE ABOUT US</p><h2>WELCOME TO<br><em>THRIFT CORE.</em></h2>
+<div class="about-grid"><p>Thrift Core is a little corner for people who'd rather find something with character than something everyone else already owns.</p><p>Every piece is selected individually. Vintage treasures, Y2K finds, gothic details, grunge staples, fairycore touches and unexpected pieces — all chosen because they deserve a second life.</p></div>
+</section>
+
+<section class="features" id="info"><div class="feature"><div class="icon">♡</div><h3>CAREFULLY CURATED</h3><p>Every piece is handpicked with love and chosen for its character.</p></div><div class="feature"><div class="icon">◎</div><h3>ONE OF A KIND</h3><p>No boring repeats. Find a piece that feels like it was meant for you.</p></div><div class="feature"><div class="icon">☆</div><h3>VINTAGE & Y2K</h3><p>From timeless vintage to Y2K, gothic, grunge and more.</p></div><div class="feature"><div class="icon">♧</div><h3>EASY ORDERING</h3><p>See something you love? Claim it through Instagram DM.</p></div></section>
+
+<section class="instagram" id="contact"><div class="igtitle"><h2>FOLLOW THE ARCHIVE</h2><a class="cta" href="https://instagram.com/" target="_blank">INSTAGRAM ↗</a></div><div class="iggrid"><div class="igbox">YOUR PHOTO</div><div class="igbox">YOUR PHOTO</div><div class="igbox">YOUR PHOTO</div><div class="igbox">YOUR PHOTO</div><div class="igbox">YOUR PHOTO</div><div class="igbox">YOUR PHOTO</div></div></section>
+
+<footer><div class="footerlogo">THRIFT<br><i>CORE</i></div><div class="foot"><h4>QUICK LINKS</h4><a href="#shop">Shop</a><a href="#archive">The Archive</a><a href="#about">About</a><a href="#info">Info</a></div><div class="foot"><h4>INFO</h4><a href="#contact">How to Order</a><a href="#info">Shipping</a><a href="#info">Returns</a><a href="#info">FAQ</a></div><div class="foot"><h4>LET'S CONNECT</h4><a href="https://instagram.com/" target="_blank">◎ @yourhandle</a><p>✆ +20 XX XXX XXXX</p><p>✉ your@email.com</p></div></footer>
+<div class="bottom">© 2026 THRIFT CORE. ALL RIGHTS RESERVED. — STAY VINTAGE, STAY YOU. ♡</div>
+</body>
+</html>
