@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>THRIFT CORE — Admin</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #141110;
+  color: #efe4d1;
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 35px 20px;
+}
+
+h1 {
+  font-family: Georgia, serif;
+  font-size: 42px;
+  margin-bottom: 5px;
+}
+
+.subtitle {
+  color: #c8b8a2;
+  margin-bottom: 35px;
+}
+
+.panel {
+  background: #e8dcc7;
+  color: #141110;
+  padding: 25px;
+  border-radius: 4px;
+  margin-bottom: 25px;
+}
+
+label {
+  display: block;
+  font-size: 12px;
+  margin: 17px 0 7px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+input,
+textarea,
+select {
+  width: 100%;
+  padding: 13px;
+  border: 1px solid #8d806e;
+  background: #f4ead9;
+  font-size: 14px;
+}
+
+textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+button {
+  margin-top: 20px;
+  padding: 14px 22px;
+  border: 0;
+  background: #601d27;
+  color: #efe4d1;
+  cursor: pointer;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+button:hover {
+  opacity: .85;
+}
+
+.back {
+  display: inline-block;
+  color: #c98b8b;
+  margin-bottom: 25px;
+  text-decoration: none;
+}
+
+.notice {
+  background: #601d27;
+  color: #efe4d1;
+  padding: 14px;
+  margin-top: 20px;
+  display: none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<a class="back" href="/">← BACK TO THRIFT CORE</a>
+
+<h1>THRIFT<br>CORE</h1>
+
+<p class="subtitle">
+ADMIN / PRODUCT MANAGEMENT
+</p>
+
+<div class="panel">
+
+<h2>Add Product</h2>
+
+<label>Product name</label>
+<input
+  type="text"
+  id="productName"
+  placeholder="e.g. Vintage Lace Top"
+>
+
+<label>Price (EGP)</label>
+<input
+  type="number"
+  id="productPrice"
+  placeholder="e.g. 350"
+>
+
+<label>Size</label>
+<input
+  type="text"
+  id="productSize"
+  placeholder="e.g. S-M"
+>
+
+<label>Category</label>
+<select id="productCategory">
+  <option value="Vintage">Vintage</option>
+  <option value="Y2K">Y2K</option>
+  <option value="Gothic">Gothic</option>
+  <option value="Grunge">Grunge</option>
+  <option value="Fairycore">Fairycore</option>
+  <option value="Other">Other</option>
+</select>
+
+<label>Description</label>
+<textarea
+  id="productDescription"
+  placeholder="Write a short description..."
+></textarea>
+
+<label>Product image</label>
+<input
+  type="file"
+  id="productImage"
+  accept="image/*"
+>
+
+<button onclick="addProduct()">
+  ADD PRODUCT
+</button>
+
+<div class="notice" id="notice"></div>
+
+</div>
+
+<div class="panel">
+
+<h2>Orders</h2>
+
+<p>
+Orders will appear here once the ordering system is connected.
+</p>
+
+<button onclick="location.reload()">
+  REFRESH ORDERS
+</button>
+
+</div>
+
+</div>
+
+<script>
+
+function addProduct() {
+
+  const name =
+    document.getElementById("productName").value.trim();
+
+  const price =
+    document.getElementById("productPrice").value;
+
+  const size =
+    document.getElementById("productSize").value.trim();
+
+  const category =
+    document.getElementById("productCategory").value;
+
+  const description =
+    document.getElementById("productDescription").value.trim();
+
+  const image =
+    document.getElementById("productImage").files[0];
+
+  const notice =
+    document.getElementById("notice");
+
+  if (!name || !price || !size) {
+
+    notice.style.display = "block";
+    notice.textContent =
+      "Please enter the product name, price and size.";
+
+    return;
+  }
+
+  /*
+    DATABASE CONNECTION WILL BE ADDED
+    IN THE NEXT STEP.
+  */
+
+  notice.style.display = "block";
+  notice.textContent =
+    "Product form is ready. Database connection comes next.";
+
+}
+
+</script>
+
+</body>
+</html>
