@@ -128,5 +128,93 @@ footer{padding:55px 7vw 25px;background:#141110;border-top:1px solid #efe4d133;d
 
 <footer><div class="footerlogo">THRIFT<br><i>CORE</i></div><div class="foot"><h4>QUICK LINKS</h4><a href="#shop">Shop</a><a href="#archive">The Archive</a><a href="#about">About</a><a href="#info">Info</a></div><div class="foot"><h4>INFO</h4><a href="#contact">How to Order</a><a href="#info">Shipping</a><a href="#info">Returns</a><a href="#info">FAQ</a></div><div class="foot"><h4>LET'S CONNECT</h4><a href="https://instagram.com/" target="_blank">◎ @yourhandle</a><p>✆ +20 XX XXX XXXX</p><p>✉ your@email.com</p></div></footer>
 <div class="bottom">© 2026 THRIFT CORE. ALL RIGHTS RESERVED. — STAY VINTAGE, STAY YOU. ♡</div>
+<script>
+const SUPABASE_URL =
+"https://zdztdvlpjnvlppbpuzsl.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_goYarunIT8BE5Le-JTowog_yrtIkCNC";
+
+async function loadProducts() {
+
+  const container =
+    document.getElementById("productsContainer");
+
+  try {
+
+    const response = await fetch(
+      SUPABASE_URL +
+      "/rest/v1/products?status=eq.available&order=created_at.desc",
+      {
+        headers: {
+          "apikey": SUPABASE_KEY,
+          "Authorization": "Bearer " + SUPABASE_KEY
+        }
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Could not load products.");
+    }
+
+    const products = await response.json();
+
+    if (!products.length) {
+      container.innerHTML = `
+        <p style="font-family:'Playfair Display';font-size:22px;">
+          New finds coming soon ★
+        </p>
+      `;
+      return;
+    }
+
+    container.innerHTML = products.map((product, index) => `
+      <article class="card">
+
+        <div class="product-photo ${product.image_url ? "has-image" : ""}">
+          <span class="number">
+            ${String(index + 1).padStart(2, "0")}
+          </span>
+
+          ${
+            product.image_url
+            ? `<img src="${product.image_url}" alt="${product.name}">`
+            : ""
+          }
+        </div>
+
+        <div class="details">
+          <h3>${product.name}</h3>
+          <span>${product.size || "ONE SIZE"}</span>
+          <div class="price">
+            ${product.price} EGP
+          </div>
+        </div>
+
+        <a
+          class="claim"
+          href="https://instagram.com/"
+          target="_blank"
+        >
+          ORDER / CLAIM ↗
+        </a>
+
+      </article>
+    `).join("");
+
+  } catch (error) {
+
+    console.error(error);
+
+    container.innerHTML = `
+      <p style="font-family:'Playfair Display';font-size:22px;">
+        Could not load the latest finds.
+      </p>
+    `;
+  }
+}
+
+loadProducts();
+</script>
 </body>
 </html>
