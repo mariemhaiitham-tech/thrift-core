@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>THRIFT CORE — Admin</title>
 
 <style>
@@ -19,14 +20,14 @@ body {
 
 .container {
   max-width: 700px;
-  margin: 0 auto;
+  margin: auto;
   padding: 35px 20px;
 }
 
 h1 {
   font-family: Georgia, serif;
   font-size: 42px;
-  margin-bottom: 5px;
+  line-height: .8;
 }
 
 .subtitle {
@@ -38,15 +39,14 @@ h1 {
   background: #e8dcc7;
   color: #141110;
   padding: 25px;
-  border-radius: 4px;
   margin-bottom: 25px;
 }
 
 label {
   display: block;
-  font-size: 12px;
-  margin: 17px 0 7px;
-  text-transform: uppercase;
+  margin-top: 17px;
+  margin-bottom: 7px;
+  font-size: 11px;
   letter-spacing: 1px;
 }
 
@@ -56,19 +56,18 @@ select {
   width: 100%;
   padding: 13px;
   border: 1px solid #8d806e;
-  background: #f4ead9;
+  background: #f5ead8;
   font-size: 14px;
 }
 
 textarea {
   min-height: 100px;
-  resize: vertical;
 }
 
 button {
   margin-top: 20px;
   padding: 14px 22px;
-  border: 0;
+  border: none;
   background: #601d27;
   color: #efe4d1;
   cursor: pointer;
@@ -81,18 +80,35 @@ button:hover {
 }
 
 .back {
-  display: inline-block;
   color: #c98b8b;
-  margin-bottom: 25px;
   text-decoration: none;
 }
 
-.notice {
+.message {
+  margin-top: 18px;
+  padding: 13px;
+  display: none;
+}
+
+.success {
+  background: #31533c;
+  color: white;
+}
+
+.error {
   background: #601d27;
-  color: #efe4d1;
-  padding: 14px;
+  color: white;
+}
+
+.product-preview {
   margin-top: 20px;
   display: none;
+}
+
+.product-preview img {
+  width: 180px;
+  height: 220px;
+  object-fit: cover;
 }
 </style>
 </head>
@@ -103,7 +119,10 @@ button:hover {
 
 <a class="back" href="/">← BACK TO THRIFT CORE</a>
 
-<h1>THRIFT<br>CORE</h1>
+<h1>
+THRIFT<br>
+CORE
+</h1>
 
 <p class="subtitle">
 ADMIN / PRODUCT MANAGEMENT
@@ -113,69 +132,52 @@ ADMIN / PRODUCT MANAGEMENT
 
 <h2>Add Product</h2>
 
-<label>Product name</label>
-<input
-  type="text"
-  id="productName"
-  placeholder="e.g. Vintage Lace Top"
->
+<label>PRODUCT NAME</label>
+<input id="productName" type="text"
+placeholder="Vintage Lace Top">
 
-<label>Price (EGP)</label>
-<input
-  type="number"
-  id="productPrice"
-  placeholder="e.g. 350"
->
+<label>PRICE — EGP</label>
+<input id="productPrice" type="number"
+placeholder="350">
 
-<label>Size</label>
-<input
-  type="text"
-  id="productSize"
-  placeholder="e.g. S-M"
->
+<label>SIZE</label>
+<input id="productSize" type="text"
+placeholder="S–M">
 
-<label>Category</label>
+<label>CATEGORY</label>
+
 <select id="productCategory">
-  <option value="Vintage">Vintage</option>
-  <option value="Y2K">Y2K</option>
-  <option value="Gothic">Gothic</option>
-  <option value="Grunge">Grunge</option>
-  <option value="Fairycore">Fairycore</option>
-  <option value="Other">Other</option>
+<option value="Vintage">Vintage</option>
+<option value="Y2K">Y2K</option>
+<option value="Gothic">Gothic</option>
+<option value="Grunge">Grunge</option>
+<option value="Fairycore">Fairycore</option>
+<option value="Other">Other</option>
 </select>
 
-<label>Description</label>
+<label>DESCRIPTION</label>
+
 <textarea
-  id="productDescription"
-  placeholder="Write a short description..."
-></textarea>
+id="productDescription"
+placeholder="Write a short description...">
+</textarea>
 
-<label>Product image</label>
+<label>PRODUCT IMAGE</label>
+
 <input
-  type="file"
-  id="productImage"
-  accept="image/*"
->
+id="productImage"
+type="file"
+accept="image/*">
 
-<button onclick="addProduct()">
-  ADD PRODUCT
-</button>
-
-<div class="notice" id="notice"></div>
-
+<div class="product-preview" id="preview">
+<img id="previewImage">
 </div>
 
-<div class="panel">
-
-<h2>Orders</h2>
-
-<p>
-Orders will appear here once the ordering system is connected.
-</p>
-
-<button onclick="location.reload()">
-  REFRESH ORDERS
+<button id="addButton">
+ADD PRODUCT
 </button>
+
+<div id="message" class="message"></div>
 
 </div>
 
@@ -183,50 +185,237 @@ Orders will appear here once the ordering system is connected.
 
 <script>
 
-function addProduct() {
+/* =========================
+   SUPABASE CONNECTION
+========================= */
+
+const SUPABASE_URL =
+"https://zdztdvlpjnvlppbpuzsl.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_goYarunIT8BE5Le-JTowog_yrtIkCNC";
+
+
+/* =========================
+   IMAGE PREVIEW
+========================= */
+
+const imageInput =
+document.getElementById("productImage");
+
+const preview =
+document.getElementById("preview");
+
+const previewImage =
+document.getElementById("previewImage");
+
+imageInput.addEventListener("change", function () {
+
+  const file = this.files[0];
+
+  if (!file) return;
+
+  previewImage.src =
+    URL.createObjectURL(file);
+
+  preview.style.display = "block";
+
+});
+
+
+/* =========================
+   MESSAGE
+========================= */
+
+function showMessage(text, type) {
+
+  const message =
+    document.getElementById("message");
+
+  message.textContent = text;
+
+  message.className =
+    "message " + type;
+
+  message.style.display = "block";
+}
+
+
+/* =========================
+   ADD PRODUCT
+========================= */
+
+document
+.getElementById("addButton")
+.addEventListener("click", async function () {
+
+  const button = this;
 
   const name =
-    document.getElementById("productName").value.trim();
+    document.getElementById("productName")
+    .value.trim();
 
   const price =
-    document.getElementById("productPrice").value;
+    document.getElementById("productPrice")
+    .value;
 
   const size =
-    document.getElementById("productSize").value.trim();
+    document.getElementById("productSize")
+    .value.trim();
 
   const category =
-    document.getElementById("productCategory").value;
+    document.getElementById("productCategory")
+    .value;
 
   const description =
-    document.getElementById("productDescription").value.trim();
+    document.getElementById("productDescription")
+    .value.trim();
 
   const image =
-    document.getElementById("productImage").files[0];
+    document.getElementById("productImage")
+    .files[0];
 
-  const notice =
-    document.getElementById("notice");
 
   if (!name || !price || !size) {
 
-    notice.style.display = "block";
-    notice.textContent =
-      "Please enter the product name, price and size.";
+    showMessage(
+      "Please enter the product name, price and size.",
+      "error"
+    );
 
     return;
   }
 
-  /*
-    DATABASE CONNECTION WILL BE ADDED
-    IN THE NEXT STEP.
-  */
 
-  notice.style.display = "block";
-  notice.textContent =
-    "Product form is ready. Database connection comes next.";
+  button.disabled = true;
 
-}
+  button.textContent =
+    "ADDING...";
+
+
+  try {
+
+    /*
+      First version:
+      Save the product information.
+
+      Image storage will be connected
+      after we confirm this works.
+    */
+
+    const response =
+      await fetch(
+        SUPABASE_URL +
+        "/rest/v1/products",
+        {
+
+          method: "POST",
+
+          headers: {
+
+            "Content-Type":
+              "application/json",
+
+            "apikey":
+              SUPABASE_KEY,
+
+            "Authorization":
+              "Bearer " + SUPABASE_KEY,
+
+            "Prefer":
+              "return=representation"
+
+          },
+
+          body: JSON.stringify({
+
+            name: name,
+
+            price: Number(price),
+
+            size: size,
+
+            category: category,
+
+            description: description,
+
+            status: "available"
+
+          })
+
+        }
+      );
+
+
+    const data =
+      await response.json();
+
+
+    if (!response.ok) {
+
+      console.error(data);
+
+      throw new Error(
+        data.message ||
+        data.hint ||
+        "Could not add product."
+      );
+
+    }
+
+
+    showMessage(
+      "✓ Product added successfully!",
+      "success"
+    );
+
+
+    document
+      .getElementById("productName")
+      .value = "";
+
+    document
+      .getElementById("productPrice")
+      .value = "";
+
+    document
+      .getElementById("productSize")
+      .value = "";
+
+    document
+      .getElementById("productDescription")
+      .value = "";
+
+    document
+      .getElementById("productImage")
+      .value = "";
+
+    preview.style.display =
+      "none";
+
+
+  } catch (error) {
+
+    console.error(error);
+
+    showMessage(
+      "Something went wrong: " +
+      error.message,
+      "error"
+    );
+
+  }
+
+
+  button.disabled = false;
+
+  button.textContent =
+    "ADD PRODUCT";
+
+});
 
 </script>
 
 </body>
 </html>
+
